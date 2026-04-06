@@ -1,0 +1,116 @@
+64 Bytes
+Running 30s test @ http://192.168.2.5/test-files/64.txt
+  1 threads and 10 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    81.65ms  117.35ms 707.71ms   82.02%
+    Req/Sec     1.65k   202.07     2.41k    68.33%
+  Latency Distribution
+     50%  719.00us
+     75%  154.30ms
+     90%  252.80ms
+     99%  536.48ms
+  49283 requests in 30.03s, 14.14MB read
+Requests/sec:   1640.89
+Transfer/sec:    482.25KB
+
+
+256 Bytes
+Running 30s test @ http://192.168.2.5/test-files/256.txt
+  1 threads and 10 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    84.98ms  126.60ms   1.30s    83.31%
+    Req/Sec     1.54k   166.11     2.24k    69.00%
+  Latency Distribution
+     50%  728.00us
+     75%  156.90ms
+     90%  257.61ms
+     99%  590.48ms
+  46018 requests in 30.02s, 21.72MB read
+  Socket errors: connect 0, read 0, write 0, timeout 2
+Requests/sec:   1532.86
+Transfer/sec:    740.91KB
+
+
+1024 Bytes 1K
+Running 30s test @ http://192.168.2.5/test-files/1024.txt
+  1 threads and 10 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    96.85ms  155.10ms   1.30s    86.80%
+    Req/Sec     1.29k   117.93     1.67k    69.67%
+  Latency Distribution
+     50%    0.91ms
+     75%  167.81ms
+     90%  273.66ms
+     99%  678.37ms
+  38520 requests in 30.02s, 46.43MB read
+  Socket errors: connect 0, read 0, write 0, timeout 1
+Requests/sec:   1283.17
+Transfer/sec:      1.55MB
+
+
+4096 Bytes 2K
+Running 30s test @ http://192.168.2.5/test-files/4096.txt
+  1 threads and 10 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   120.88ms  213.48ms   1.31s    88.79%
+    Req/Sec     1.02k    84.89     1.27k    72.33%
+  Latency Distribution
+     50%    1.04ms
+     75%  180.27ms
+     90%  385.90ms
+     99%    1.05s 
+  30468 requests in 30.02s, 126.02MB read
+  Socket errors: connect 0, read 0, write 0, timeout 7
+Requests/sec:   1015.00
+Transfer/sec:      4.20MB
+
+
+16384 Bytes 16K
+Running 30s test @ http://192.168.2.5/test-files/16384.txt
+  1 threads and 10 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    17.17ms   99.93ms   1.31s    97.08%
+    Req/Sec   483.17     71.10   535.00     89.90%
+  Latency Distribution
+     50%    1.93ms
+     75%    1.96ms
+     90%    2.10ms
+     99%  578.43ms
+  14359 requests in 30.06s, 227.68MB read
+  Socket errors: connect 0, read 0, write 0, timeout 15
+Requests/sec:    477.61
+Transfer/sec:      7.57MB
+
+
+65536 Bytes 65K
+Running 30s test @ http://192.168.2.5/test-files/65536.txt
+  1 threads and 10 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    38.54ms  160.31ms   1.39s    95.69%
+    Req/Sec   143.19     38.43   171.00     84.90%
+  Latency Distribution
+     50%    6.19ms
+     75%    6.25ms
+     90%    6.60ms
+     99%    1.03s 
+  4277 requests in 30.01s, 268.39MB read
+  Socket errors: connect 0, read 0, write 0, timeout 11
+Requests/sec:    142.52
+Transfer/sec:      8.94MB
+
+
+262144 Bytes 0.35M
+Running 30s test @ http://192.168.2.5/test-files/262144.txt
+  1 threads and 10 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    88.50ms  235.37ms   1.75s    94.19%
+    Req/Sec    28.83     14.04    50.00     66.42%
+  Latency Distribution
+     50%   23.34ms
+     75%   24.36ms
+     90%  124.43ms
+     99%    1.38s 
+  829 requests in 30.04s, 208.16MB read
+  Socket errors: connect 0, read 0, write 0, timeout 16
+Requests/sec:     27.60
+Transfer/sec:      6.93MB
