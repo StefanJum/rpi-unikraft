@@ -1,0 +1,106 @@
+##
+## RASPI platform registration
+##
+$(eval $(call addplat_s,raspi,$(CONFIG_PLAT_RASPI)))
+
+# USPi settings
+RASPPI = 3 
+AARCH64 = 1
+
+##
+## RASPI platform library registration
+##
+$(eval $(call addplatlib,raspi,libraspiplat))
+$(eval $(call addplatlib_s,raspi,libraspilcd,$(RASPI_LCD)))
+$(eval $(call addplatlib_s,raspi,libraspitouchscreen,$(RASPI_TOUCHSCREEN)))
+
+##
+## Platform library definitions
+##
+LIBRASPIPLAT_ASINCLUDES-y        += -I$(LIBRASPIPLAT_BASE)/include
+LIBRASPIPLAT_ASINCLUDES-y        += -I$(UK_PLAT_COMMON_BASE)/include
+LIBRASPIPLAT_CINCLUDES-y         += -I$(LIBRASPIPLAT_BASE)/include
+LIBRASPIPLAT_CINCLUDES-y         += -I$(UK_PLAT_COMMON_BASE)/include
+LIBRASPIPLAT_CINCLUDES-y         += -I$(UK_PLAT_DRIVERS_BASE)/include
+
+LIBRASPIPLAT_ASFLAGS             += -DRASPIPLAT -DRASPPI=$(RASPPI) -DAARCH64=$(AARCH64)
+LIBRASPIPLAT_CFLAGS              += -DRASPIPLAT -DRASPPI=$(RASPPI) -DAARCH64=$(AARCH64)
+LIBRASPIPLAT_CXXFLAGS            += -DRASPIPLAT -DRASPPI=$(RASPPI) -DAARCH64=$(AARCH64)
+
+##
+## Default Linker script
+UK_PLAT_RASPI_DEF_LDS            := $(LIBRASPIPLAT_BASE)/link.lds.S
+
+##
+## Architecture library definitions
+##
+ifeq ($(findstring y,$(CONFIG_RASPI_PRINTF_SERIAL_CONSOLE) $(CONFIG_RASPI_KERNEL_SERIAL_CONSOLE) $(CONFIG_RASPI_DEBUG_SERIAL_CONSOLE)),y)
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/serial_console.c
+endif
+LIBRASPIPLAT_SRCS-$(CONFIG_ARCH_ARM_64) += $(UK_PLAT_COMMON_BASE)/arm/cpu_native.c|common
+LIBRASPIPLAT_SRCS-$(CONFIG_ARCH_ARM_64) += $(UK_PLAT_COMMON_BASE)/arm/cache64.S|common
+LIBRASPIPLAT_SRCS-$(CONFIG_FPSIMD)      += $(UK_PLAT_COMMON_BASE)/arm/fp_arm64.c|isr
+LIBRASPIPLAT_SRCS-$(CONFIG_ARCH_ARM_64) += $(UK_PLAT_COMMON_BASE)/arm/generic_timer.c|common
+ifeq ($(CONFIG_HAVE_SCHED),y)
+endif
+
+LIBRASPIPLAT_SRCS-y                 += $(UK_PLAT_COMMON_BASE)/bootinfo.c|common
+LIBRASPIPLAT_SRCS-$(CONFIG_LIBFDT)  += $(UK_PLAT_COMMON_BASE)/bootinfo_fdt.c|common
+LIBRASPIPLAT_SRCS-y                 += $(UK_PLAT_COMMON_BASE)/bootinfo.lds.S|common
+
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/start.S
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/irq_asm.S
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/raspi_info_asm.S
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/raspi_info.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/entry.S
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/mm.S
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/console.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/io.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/irq.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/eth/uspienv.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/eth/lib/logger.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/eth/lib/uspibind.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/eth/lib/uspilibrary.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/eth/lib/devicenameservice.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/eth/lib/dwhcidevice.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/eth/lib/string.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/eth/lib/lan7800.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/eth/lib/macaddress.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/eth/lib/smsc951x.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/eth/lib/dwhcirootport.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/eth/lib/dwhciregister.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/eth/lib/synchronize.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/eth/lib/dwhcixferstagedata.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/eth/lib/usbrequest.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/eth/lib/usbendpoint.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/eth/lib/bcmpropertytags.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/eth/lib/usbfunction.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/eth/lib/usbdevice.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/eth/lib/dwhciframeschedper.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/eth/lib/dwhciframeschednsplit.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/eth/lib/dwhciframeschednper.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/eth/lib/usbstring.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/eth/lib/usbconfigparser.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/eth/lib/bcmmailbox.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/eth/lib/memio.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/eth/lib/usbdevicefactory.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/eth/lib/usbstandardhub.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/eth/lib/timer2.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/eth/lib/interrupt.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/drivers/raspi_net.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/lcpu.c
+ifeq ($(findstring y,$(CONFIG_RASPI_LCD) $(CONFIG_RASPI_LCD)),y)
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/lfb.c
+endif
+ifeq ($(findstring y,$(CONFIG_RASPI_TOUCHSCREEN) $(CONFIG_RASPI_TOUCHSCREEN)),y)
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/touchscreen.c
+endif
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/mbox.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/memory.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/setup.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/shutdown.c
+LIBRASPIPLAT_SRCS-y				+= $(LIBRASPIPLAT_BASE)/time.c
+LIBRASPIPLAT_SRCS-y				+= $(UK_PLAT_COMMON_BASE)/lcpu.c|common
+LIBRASPIPLAT_SRCS-y				+= $(UK_PLAT_COMMON_BASE)/memory.c|common
+LIBRASPIPLAT_SRCS-y				+= $(UK_PLAT_COMMON_BASE)/tls.c|common
+LIBRASPIPLAT_SRCS-y				+= $(UK_PLAT_RASPI_DEF_LDS)
