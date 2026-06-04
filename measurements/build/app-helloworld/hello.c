@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#define OPTEE_SMC_CALLS_UID 0xB2000000
+#define OPTEE_SMC_CALLS_UID 0xB2000001
 
 // OP-TEE UID (returns in x0..x3): 384FB3E0 E7F811E3 AF630002 A5D5C51B
 // See optee_os/core/arch/arm/include/sm/optee_smc.h
