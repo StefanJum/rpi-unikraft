@@ -48,6 +48,9 @@
 
 #include <raspi/setup.h>
 
+#define OPTEE_SHM_BASE  0x08000000UL
+#define OPTEE_SHM_SIZE  0x00400000UL
+
 static uint64_t assembly_entry;
 static uint64_t hardware_init_done;
 
@@ -158,7 +161,7 @@ static void __libraspiplat_mem_init(void)
 		&(struct ukplat_memregion_desc){
 			.vbase = __END,
 			.pbase = __END,
-			.len   = (size_t) ((MMIO_BASE/2 - 1) - (size_t) __END) / __PAGE_SIZE * __PAGE_SIZE,
+			.len   = (size_t) (OPTEE_SHM_BASE - (size_t) __END) / __PAGE_SIZE * __PAGE_SIZE,
 			.type  = UKPLAT_MEMRT_FREE,
 			.flags = UKPLAT_MEMRF_READ |
 					UKPLAT_MEMRF_WRITE |
@@ -166,6 +169,19 @@ static void __libraspiplat_mem_init(void)
 		});
 	if (unlikely(rc < 0))
 		uk_pr_err("Failed to add heap memory region descriptor.\n");
+
+	/* SHM window: mapped (so you can read/write it) but never allocated */
+	rc = ukplat_memregion_list_insert(&bi->mrds,
+			&(struct ukplat_memregion_desc){
+			.vbase = OPTEE_SHM_BASE,
+			.pbase = OPTEE_SHM_BASE,
+			.len   = OPTEE_SHM_SIZE,
+			.type  = UKPLAT_MEMRT_RESERVED,
+			.flags = UKPLAT_MEMRF_READ | UKPLAT_MEMRF_WRITE | UKPLAT_MEMRF_MAP,
+			});
+
+	if (unlikely(rc < 0))
+		uk_pr_err("Failed to add OPTEE SHM memory region descriptor.\n");
 }
 
 void _libraspiplat_entry(uint64_t low0, uint64_t hi0, uint64_t low1, uint64_t hi1)
